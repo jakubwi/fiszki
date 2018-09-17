@@ -4,16 +4,29 @@
 {% block title %} - Your Decks {% endblock %}
 {% block content %}
 
-{% for deck in object_list %}
-<div class="card">
+{% if object_list %}
+{% if username == deck.author %}
+your decks
+{% endif %}
+  {% for deck in object_list %}
+      <div class="card">
         <div class="card-body">
           <h5 class="card-title">{{ deck.name }}</h5>
           <h6 class="card-subtitle mb-2 text-muted"> {{ deck.description }}</h6>
           <p class="card-text"></p>
-          <a href="{% url 'deck_detail' deck.pk %}" class="card-link">View deck</a>
-          <a href="{% url 'deck_delete' deck.pk %}" class="card-link">Delete deck</a>
+          <a href="{% url 'deck_detail' deck.slug %}" class="card-link">View deck</a>
+          <a href="{% url 'deck_delete' deck.slug %}" class="card-link">Delete deck</a>
         </div>
       </div>
-{% endfor %}
-
+  {% endfor %}
+{% else %}
+  <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">You have not created any decks!</h5>
+        <h6 class="card-subtitle mb-2 text-muted"></h6>
+        <p class="card-text"></p>
+        Create your new deck <a href="{% url 'deck_new' %}" class="card-link">here.</a>
+      </div>
+  </div>
+{% endif %}
 {% endblock %}

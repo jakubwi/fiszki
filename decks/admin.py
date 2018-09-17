@@ -6,8 +6,9 @@ class CardInline(admin.TabularInline):
     model = models.Card
 
 class DeckAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author', )
+    list_display = ('name', 'author', 'slug' )
     inlines = [CardInline]
+    prepopulated_fields = {'slug': ('name',)}
 
 class CardAdmin(admin.ModelAdmin):
     list_display = ('name', 'deck')

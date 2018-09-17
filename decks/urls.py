@@ -1,9 +1,11 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from . import views
 
 urlpatterns = [
     path('', views.DeckListView.as_view(), name='deck_list'),
-    path('<int:pk>/detail/', views.DeckDetailView.as_view(), name='deck_detail'),
-    path('<int:pk>/delete/', views.DeckDeleteView.as_view(), name='deck_delete'),
+    path('<slug:slug>/detail/', views.DeckDetailView.as_view(), name='deck_detail'),
+    path('<slug:slug>/delete/', views.DeckDeleteView.as_view(), name='deck_delete'),
     path('new/', views.DeckCreateView.as_view(), name='deck_new'),
+    #path('<int:pk>/cards/new', views.CardCreateView.as_view(), name='card_new'),
+    #path('<int:pk>/cards/detail/', views.CardDetailView.as_view(), name='card_detail'),
 ]
