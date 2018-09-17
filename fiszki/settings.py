@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     #local
     'users',
     'pages',
+    'decks',
     
 ]
 
@@ -133,8 +134,8 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 # login/logout redirect
 
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'deck_list'
+LOGOUT_REDIRECT_URL = 'about'
 
 # django-crispy-forms
 

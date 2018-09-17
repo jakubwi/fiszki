@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %} - {{ object.name }} {% endblock %}
+{% block content %}
+
+<div class="article-entry">
+  <h2>{{ object.name }}</h2>
+  <p>{{ object.description }}</p>
+</div>
+  <p><a href="{% url 'deck_detail' deck.pk %}">Add card</a> | <a href="{% url 'deck_delete' deck.pk %}">Delete</a></p>
+  <p>Back to <a href="{% url 'deck_list' %}">your decks</a>.</p>
+
+
+<div class="card-footer">
+  {% for card in deck.cards.all %}
+  <p>
+    <span class="font-weight-bold">{{ card.name }}</span>
+    {{ card.front }}
+    {{ card.back }}
+  </p>
+  {% endfor %}
+</div>
+<br />
+{% endblock %}

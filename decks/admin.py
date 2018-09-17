@@ -1,3 +1,16 @@
 from django.contrib import admin
+from . import models
+from .models import Deck
 
-# Register your models here.
+class CardInline(admin.TabularInline):
+    model = models.Card
+
+class DeckAdmin(admin.ModelAdmin):
+    list_display = ('name', 'author', )
+    inlines = [CardInline]
+
+class CardAdmin(admin.ModelAdmin):
+    list_display = ('name', 'deck')
+
+admin.site.register(models.Deck, DeckAdmin)
+admin.site.register(models.Card, CardAdmin)
