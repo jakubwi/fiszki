@@ -8,7 +8,7 @@
   <h2>{{ object.name }}</h2>
   <p>{{ object.description }}</p>
 </div>
-  <p><a href="">Add new card</a> | <a href="{% url 'deck_delete' deck.slug %}">Delete</a></p>
+  <p><a href="{% url 'card_new' deck.slug %}">Add new card</a> | <a href="{% url 'deck_delete' deck.slug %}">Delete</a></p>
   <p>Back to <a href="{% url 'deck_list' %}">your decks</a>.</p>
 
 

@@ -21,6 +21,7 @@ class Deck(models.Model):
 
 class Card(models.Model):
     deck = models.ForeignKey(Deck, on_delete=models.CASCADE, related_name='cards')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     front = models.TextField()
     back = models.TextField()
