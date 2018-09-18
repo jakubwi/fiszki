@@ -3,9 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.DeckListView.as_view(), name='deck_list'),
-    path('<slug:slug>/detail/', views.DeckDetailView.as_view(), name='deck_detail'),
     path('<slug:slug>/delete/', views.DeckDeleteView.as_view(), name='deck_delete'),
     path('new/', views.DeckCreateView.as_view(), name='deck_new'),
     path('<slug:slug>/cards/new/', views.CardCreateView.as_view(), name='card_new'),
-    path('<int:pk>/cards/detail/', views.CardDetailView.as_view(), name='card_detail'),
+    path('<slug:slug>/learning/', views.LearningView, name='learning'),
 ]

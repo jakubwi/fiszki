@@ -9,6 +9,9 @@ class Deck(models.Model):
     description = models.CharField(max_length=255)
     slug = models.SlugField(unique=False)
 
+    class Meta:
+        unique_together = (("name", "author"),)
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Deck, self) .save(*args, **kwargs)
@@ -30,4 +33,4 @@ class Card(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('card_detail', args=[str(self.id)])
+        return reverse('deck_list')

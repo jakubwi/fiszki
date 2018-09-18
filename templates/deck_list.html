@@ -6,16 +6,34 @@
 
 {% if object_list %}
   {% for deck in object_list %}
-      <div class="card">
+      <div class="card text-center">
         <div class="card-body">
-          <h5 class="card-title">{{ deck.name }}</h5>
+          <h1 class="card-title">{{ deck.name }}</h5>
           <h6 class="card-subtitle mb-2 text-muted"> {{ deck.description }}</h6>
           <p class="card-text"></p>
-          <a href="{% url 'deck_detail' deck.slug %}" class="card-link">View deck</a>
-          <a href="{% url 'deck_delete' deck.slug %}" class="card-link">Delete deck</a>
+          <p><a class="btn btn-secondary btn-lg" href="{% url 'learning' deck.slug %}">Start Learning!</a></p>
+          <a href="{% url 'card_new' deck.slug %}"><button type="button" class="btn btn-outline-dark btn-sm">Add new card</button></a>
+          <a href="{% url 'deck_delete' deck.slug %}"><button type="button" class="btn btn-outline-danger btn-sm">Delete deck</button></a>
+        
         </div>
       </div>
   {% endfor %}
+
+  {% if is_paginated %}
+  <nav>
+    <ul class="pagination">
+      <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a></li>
+      {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="/decks?page={{ page_obj.previous_page_number }}"><span class="text-dark">previous</span></a></li>
+      {% endif %}
+      {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="/decks?page={{ page_obj.next_page_number }}"><span class="text-dark">next</span></a></li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
 {% else %}
   <div class="card">
       <div class="card-body">

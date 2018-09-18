@@ -5,12 +5,14 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import models
 from .models import Card, Deck
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 class DeckListView(LoginRequiredMixin, ListView):
     model = models.Deck
     template_name = 'deck_list.html'
     login_url = 'login'
+    paginate_by = 3
 
     def get_queryset(self):
         return Deck.objects.filter(author=self.request.user)
@@ -20,9 +22,10 @@ class DeckDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'deck_delete.html'
     success_url = reverse_lazy('deck_list')
     login_url = 'login'
-
+ 
     def get_queryset(self):
         return Deck.objects.filter(author=self.request.user)
+
 
 class DeckCreateView(LoginRequiredMixin, CreateView):
     model = models.Deck
@@ -33,14 +36,6 @@ class DeckCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-
-class DeckDetailView(LoginRequiredMixin, DetailView):
-    model = models.Deck
-    template_name = 'deck_detail.html'
-    login_url = 'login'
-
-    def get_queryset(self):
-        return Deck.objects.filter(author=self.request.user)
 
 # CARD views
 
@@ -54,18 +49,36 @@ class CardCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+#def LearningView(request, slug):
+#    context_dict = {}
+#    try: 
+#        deck = Deck.objects.get(slug=slug, author=request.user)
+#        cards = Card.objects.filter(deck=deck, author=request.user)
+#        context_dict['cards'] = cards
+#        context_dict['deck'] = deck
+#    except Deck.DoesNotExist:
+#        context_dict['cards'] = None
+#        context_dict['deck'] = None
+#    return render(request, 'learning.html', context_dict)
 
-class CardDetailView(LoginRequiredMixin, DetailView):
-    model = models.Card
-    template_name = 'card_detail.html'
-    login_url = 'login'
+def LearningView(request, slug):
+    deck = Deck.objects.get(slug=slug, author=request.user)
+    card_list = Card.objects.filter(deck=deck, author=request.user)
+    paginator = Paginator(card_list, 1)
+    page = request.GET.get('page')
+    context_dict = {}
+    try: 
+        deck = Deck.objects.get(slug=slug, author=request.user)
+        cards = Card.objects.filter(deck=deck, author=request.user)
+        cards = paginator.page(page)
+        context_dict['cards'] = cards
+        context_dict['deck'] = deck
+    except PageNotAnInteger:
+        cards = paginator.page(1)
+    except EmptyPage:
+        cards = paginator.page(paginator.num_pages)
+    except Deck.DoesNotExist:
+        context_dict['cards'] = None
+        context_dict['deck'] = None
 
-    def get_queryset(self):
-        return Card.objects.filter(author=self.request.user)
-
-    def get_object(self):
-        slug = self.kwargs['slug']
-        pk2 = self.kwargs['pk2']
-        deck = get_object_or_404(Deck, slug=slug)
-        card = get_object_or_404(Card, pk=pk2)
-        return card
+    return render(request, 'learning.html', {'cards': cards, 'deck': deck, 'page': page, })
