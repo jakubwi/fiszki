@@ -7,7 +7,13 @@
     <h1 class="display-4">Welcome to 'Fiszki'!</h1>
     <p class="lead">This is a simple site that helps you learn.</p>
     <hr class="my-4">
-    <p>Start learning by creating your first deck:</p>
-    <a class="btn btn-dark btn-lg" href="{% url 'signup' %}" role="button">Sign up!</a>
+    {% if user.is_authenticated %}
+    <p>Start learning:</p>
+    <a class="btn btn-dark btn-lg" href="{% url 'deck_list' %}" role="button">Start!</a>
+    {% else %}
+    <p>Start learning by logging in!</p>
+    <a class="btn btn-outline-dark btn-lg" href="{% url 'login' %}" role="button">Login</a>
+    <a class="btn btn-dark btn-lg" href="{% url 'signup' %}" role="button">Sign up</a> 
+    {% endif %}
 </div>
 {% endblock %}
