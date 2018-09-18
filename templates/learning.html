@@ -9,10 +9,9 @@
     <h1>{{ deck.name }}</h1>
     <p>{{ deck.description }}</p>
     {% if cards %}
-      {{ cards.count }}
       {% for card in cards %}
-      <div class="card" style="max-width: 18rem;">
-      <div class="card-header">{{ card.name }}</div>
+        <div class="card" style="max-width: 18rem;">
+        <div class="card-header">{{ card.name }}</div>
       <div class="card-body">
       <h5 class="card-title">{{ card.front }}</h5>
         <p>
@@ -37,6 +36,8 @@
               {% endif %}
           </ul>
       </nav>
+      </div>
+      <a href="{% url 'card_delete' card.id %}"><span class="badge badge-danger">Delete card</span></a>
       {% endfor %}
     {% else %}
       <strong>No cards currently in deck.</strong>
@@ -44,4 +45,5 @@
   {% else %}
     The specified deck does not exist!
   {% endif %}
+  <p>Back to <a class="text-secondary" href="{% url 'deck_list' %}">your decks</a>.</p>
 {% endblock %}

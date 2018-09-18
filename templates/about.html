@@ -3,14 +3,11 @@
 
 {% block title %} - Home {% endblock %}
 {% block content %}
-
-    {% if user.is_authenticated %}
-        Hi {{ user.username }}!
-        <p><a href="{% url 'logout' %}">logout</a></p>
-    {% else %}  
-        <p>You are not logged in</p>
-        <a href="{% url 'login' %}">login</a> |
-        <a href="{% url 'signup' %}">signup</a>
-    {% endif %}
-
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to 'Fiszki'!</h1>
+    <p class="lead">This is a simple site that helps you learn.</p>
+    <hr class="my-4">
+    <p>Start learning by creating your first deck:</p>
+    <a class="btn btn-dark btn-lg" href="{% url 'signup' %}" role="button">Sign up!</a>
+</div>
 {% endblock %}

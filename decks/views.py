@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from . import models
 from .models import Card, Deck
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 
 
 class DeckListView(LoginRequiredMixin, ListView):
@@ -49,18 +50,16 @@ class CardCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-#def LearningView(request, slug):
-#    context_dict = {}
-#    try: 
-#        deck = Deck.objects.get(slug=slug, author=request.user)
-#        cards = Card.objects.filter(deck=deck, author=request.user)
-#        context_dict['cards'] = cards
-#        context_dict['deck'] = deck
-#    except Deck.DoesNotExist:
-#        context_dict['cards'] = None
-#        context_dict['deck'] = None
-#    return render(request, 'learning.html', context_dict)
+class CardDeleteView(LoginRequiredMixin, DeleteView):
+    model = models.Card
+    template_name = 'card_delete.html'
+    success_url = reverse_lazy('deck_list')
+    login_url = 'login'
 
+    def get_queryset(self):
+        return Card.objects.filter(author=self.request.user)
+
+@login_required
 def LearningView(request, slug):
     deck = Deck.objects.get(slug=slug, author=request.user)
     card_list = Card.objects.filter(deck=deck, author=request.user)
