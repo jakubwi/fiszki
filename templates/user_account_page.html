@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %} - Account Settings{% endblock %}
+{% block content %}
+    <h1>Account settings</h1>
+    <p>You are currently logged in as <strong>{{ user.username }}</strong>.</p>
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Password change</h5>
+          <h6 class="card-subtitle mb-2 text-muted"></h6>
+            <p class="card-text"><a href="{% url 'password_change' %}" class="btn btn-outline-secondary" role="button">Change</a></p>        
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Password reset</h5>
+          <h6 class="card-subtitle mb-2 text-muted"></h6>
+            <p class="card-text"><a href="{% url 'password_reset' %}" class="btn btn-outline-secondary" role="button">Reset</a></p>        
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Delete account</h5>
+          <h6 class="card-subtitle mb-2 text-muted"></h6>
+            <p class="card-text"><a href="{% url 'user_delete' user.pk %}" class="btn btn-outline-danger" role="button">Delete</a></p>        
+        </div>
+    </div>
+{% endblock %}

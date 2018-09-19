@@ -34,7 +34,7 @@
                   
                 <ul class="nav justify-content-end">
                   {% if user.is_authenticated %}
-                  <li class="nav-item"><a class="btn btn-outline-light" href="{% url 'password_change' %}">Account</a></li>
+                  <li class="nav-item"><a class="btn btn-outline-light" href="{% url 'user_account_page' user.username %}">Account</a></li>
                   <li class="nav-item"><a class="btn btn-outline-light" href="{% url 'logout' %}">Logout</a></li>
                   {% else %}
                   <li class="nav-item"><a class="btn btn-outline-light" href="{% url 'login' %}">Login</a></li>

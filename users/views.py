@@ -1,12 +1,3 @@
-#from django.shortcuts import render
-#rom django.urls import reverse_lazy
-#from django.views import generic
-#from .forms import CustomUserChangeForm, CustomUserCreationForm
-
-#class SignUp(generic.CreateView):
-#    form_class = CustomUserCreationForm
-#    success_url = reverse_lazy('login')
-#    template_name = 'signup.html'
 import json
 import urllib
 from django.shortcuts import render, redirect
@@ -18,17 +9,25 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.tokens import default_token_generator
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from . import models
 from .models import CustomUser
 from django.views.generic import TemplateView
+from django.views.generic.edit import DeleteView
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class ActivationConfirmView(TemplateView):
     template_name = 'acc_active_confirm.html'
 
+class UserDeleteView(LoginRequiredMixin, DeleteView):
+    model = models.CustomUser
+    template_name = 'user_delete.html'
+    success_url = reverse_lazy('about')
+    login_url = 'login'
+ 
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)

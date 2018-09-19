@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %} - Delete account?{% endblock %}
+{% block content %}
+<h1>Account settings</h1>
+<p>You are currently logged in as <strong>{{ user.username }}</strong>.</p>
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Password change</h5>
+      <h6 class="card-subtitle mb-2 text-muted"></h6>
+        <p class="card-text"><a href="{% url 'password_change' %}" class="btn btn-outline-secondary" role="button">Change</a></p>        
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Password reset</h5>
+      <h6 class="card-subtitle mb-2 text-muted"></h6>
+        <p class="card-text"><a href="{% url 'password_reset' %}" class="btn btn-outline-secondary" role="button">Reset</a></p>        
+    </div>
+</div>
+<div class="card text-white bg-dark">
+        <div class="card-body">
+        <h5 class="card-title">Delete account?</h5>
+        <p class="card-text">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    Are you sure you want to delete your account? You will lost all your decks and cards!
+                    <br/>
+                    <br/>
+                    <button class="btn btn-danger btn-lg" type="submit">I am sure.</button>
+                    </p>
+                </form>
+        </p>        
+        </div>
+</div>
+{% endblock %}
