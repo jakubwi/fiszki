@@ -27,6 +27,11 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'user_delete.html'
     success_url = reverse_lazy('about')
     login_url = 'login'
+    success_message = "Your account has been successfully deleted. We are sorry to see you go!"
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(UserDeleteView, self).delete(request, *args, **kwargs)
  
 def signup(request):
     if request.method == 'POST':

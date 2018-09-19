@@ -3,6 +3,13 @@
 
 {% block title %} - Home {% endblock %}
 {% block content %}
+{% if messages %}
+<div class="alert alert-danger" role="alert">
+    {% for message in messages %}
+    <p class="{{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
 <div class="jumbotron">
     <h1 class="display-4">Welcome to 'Fiszki'!</h1>
     <p class="lead">This is a simple site that helps you learn.</p>
