@@ -1,15 +1,13 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import DeleteView, CreateView
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import models
 from .models import Card, Deck
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import AbstractUser
-from . import forms
-from .forms import CardForm
+
 
 class DeckListView(LoginRequiredMixin, ListView):
     model = models.Deck
@@ -42,7 +40,7 @@ class DeckCreateView(LoginRequiredMixin, CreateView):
 
 # CARD views
 
-class XCardCreateView(LoginRequiredMixin, CreateView):
+class CardCreateView(LoginRequiredMixin, CreateView):
     model = models.Card
     template_name = 'card_new.html'
     login_url = 'login'
@@ -51,26 +49,6 @@ class XCardCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-
-@login_required
-def CardCreateView(request, slug):
-    deck = Deck.objects.get(slug=slug, author=request.user)
-    form = CardForm()
- 
-    if request.method == 'POST':
-        form = CardForm(request.POST)
-        if form.is_valid():
-            if deck:
-                card = form.save(commit=False)
-                card.deck = deck
-                card.author = request.user
-                card.save()
-                return redirect('deck_list')
-        else:
-            print(form.errors)
-
-    context_dict = {'form': form, 'deck': deck, 'slug': slug}
-    return render(request, 'card_new.html', context_dict)
 
 class CardDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Card
