@@ -11,7 +11,7 @@ class DeckAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 class CardAdmin(admin.ModelAdmin):
-    list_display = ('name', 'deck')
+    list_display = ('name', 'author', 'deck')
 
 admin.site.register(models.Deck, DeckAdmin)
 admin.site.register(models.Card, CardAdmin)
