@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %} - Your account has been activated!{% endblock %}
+{% block content %}
+<h1>Welcome!</h1>
+<p>Your account has ben activated. You can log in now on the <a href="{% url 'login' %}"><span class="text-dark"><strong>log in page</strong></span></a>.</p>
+{% endblock %}
