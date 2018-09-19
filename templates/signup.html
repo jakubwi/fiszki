@@ -8,8 +8,18 @@
 <form method="POST">
     {% csrf_token %}
     {{ form|crispy }}
+
+    <div class="alert alert-danger" role="alert">
+            {% if messages %}
+            {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+    </div>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <div class="g-recaptcha" data-sitekey="6LfIFnEUAAAAAGYx5EQfv9wRoOyGsnSeDWX341GV"></div>
+<br/>
     <button class="btn btn-dark" type="submit">Sign up</button>
 </form>
-
 {% endblock %}
 

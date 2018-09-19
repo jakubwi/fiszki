@@ -7,7 +7,8 @@
 #    form_class = CustomUserCreationForm
 #    success_url = reverse_lazy('login')
 #    template_name = 'signup.html'
-
+import json
+import urllib
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.utils.encoding import force_bytes, force_text
@@ -23,6 +24,7 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 from . import models
 from .models import CustomUser
 from django.views.generic import TemplateView
+from django.contrib import messages
 
 class ActivationConfirmView(TemplateView):
     template_name = 'acc_active_confirm.html'
@@ -31,11 +33,30 @@ def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save()
-            send_account_activation_email(request, user)
-            return redirect('activation_confirm')
+
+            ### Begin reCAPTCHA validation ###
+            recaptcha_response = request.POST.get('g-recaptcha-response')
+            url = 'https://www.google.com/recaptcha/api/siteverify'
+            values = {
+                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+                'response': recaptcha_response
+            }
+            data = urllib.parse.urlencode(values).encode()
+            req =  urllib.request.Request(url, data=data)
+            response = urllib.request.urlopen(req)
+            result = json.loads(response.read().decode())
+            ### End reCAPTCHA validation ###
+
+            if result['success']:
+                user = form.save(commit=False)
+                user.is_active = False
+                user.save()
+                send_account_activation_email(request, user)
+                return redirect('activation_confirm')
+            else:
+                messages.error(request, 'Are you really a robot? Please try again.')
+                
+            return redirect('signup')
     else:
         form = CustomUserCreationForm()
     return render(request, 'signup.html', {'form': form})
